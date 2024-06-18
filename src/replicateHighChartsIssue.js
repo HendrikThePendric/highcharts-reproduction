@@ -38,8 +38,21 @@ const formatDataLabel = (name = '', y, percentage) => {
     )
 }
 
-export function replicateHighChartsIssue(containerElement) {
-    return showChart({
+export function replicateHighChartsIssue(containerElement, withFormatter) {
+    const dataLabelsConfig = withFormatter
+        ? {
+              enabled: true,
+              padding: 0,
+              formatter: function () {
+                  return formatDataLabel(
+                      this.point.name,
+                      this.y,
+                      this.percentage
+                  )
+              },
+          }
+        : { enabled: true, padding: 0 }
+    const chart = showChart({
         chart: {
             type: 'pie',
             renderTo: containerElement,
@@ -118,17 +131,7 @@ export function replicateHighChartsIssue(containerElement) {
                     },
                 ],
                 colors: ['#a9be3b', '#558cc0', '#d34957'],
-                dataLabels: {
-                    enabled: true,
-                    padding: 0,
-                    formatter: function () {
-                        return formatDataLabel(
-                            this.point.name,
-                            this.y,
-                            this.percentage
-                        )
-                    },
-                },
+                dataLabels: dataLabelsConfig,
                 tooltip: {
                     headerFormat: '',
                     pointFormat:
@@ -166,4 +169,9 @@ export function replicateHighChartsIssue(containerElement) {
         },
         plotOptions: {},
     })
+
+    const resizeObserver = new ResizeObserver(() => {
+        chart.reflow()
+    })
+    resizeObserver.observe(containerElement)
 }
