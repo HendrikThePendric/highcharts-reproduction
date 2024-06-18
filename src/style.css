@@ -1,4 +1,5 @@
 #container {
-  border: 1px solid magenta;
-  height: 300px;
+    border: 4px solid magenta;
+    height: 150px;
+    resize: vertical;
 }
