@@ -1,5 +1,8 @@
 export default {
-    base: '/highcharts-reproduction/',
+    base:
+        process.env.NODE_ENV === 'development'
+            ? '/'
+            : '/highcharts-reproduction/',
     root: 'src',
     build: {
         outDir: '../dist',
